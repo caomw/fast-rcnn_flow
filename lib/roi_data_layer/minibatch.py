@@ -115,16 +115,41 @@ def _get_image_blob(roidb, scale_inds):
     """Builds an input blob from the images in the roidb at the specified
     scales.
     """
+    # change to read flow images, assuming the names are without ".jpg"
+    # path/000000
     num_images = len(roidb)
     processed_ims = []
     im_scales = []
     for i in xrange(num_images):
-        im = cv2.imread(roidb[i]['image'])
-        if roidb[i]['flipped']:
-            im = im[:, ::-1, :]
-        target_size = cfg.TRAIN.SCALES[scale_inds[i]]
-        im, im_scale = prep_im_for_blob(im, cfg.PIXEL_MEANS, target_size,
-                                        cfg.TRAIN.MAX_SIZE)
+        imname = roidb[i]['image']
+        imnames = imname.split('/')
+        imname2 = imnames[-1]
+        imid   = int(imname2)
+        srcdir = imname[0 : -len(imname2)]
+
+        im_scale = 1
+        im = 0
+
+        for i in range(10):
+            nowimid = imid + i
+            nowname = '{0:06d}'.format(nowimid)
+            nowname = srcdir + nowname
+            xname = nowname + '_x.jpg'
+            yname = nowname + '_y.jpg'
+            imx   = cv2.imread(xname, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            imy   = cv2.imread(yname, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            if roidb[i]['flipped']:
+                imx = imx[:, ::-1, :]
+                imx = 255 - imx
+            target_size = cfg.TRAIN.SCALES[scale_inds[i]]
+            imx, im_scale = prep_im_for_blob(imx, cfg.PIXEL_MEANS, target_size, cfg.TRAIN.MAX_SIZE)
+            imy, im_scale = prep_im_for_blob(imy, cfg.PIXEL_MEANS, target_size, cfg.TRAIN.MAX_SIZE)
+            if i == 0:
+                im = np.zeros((imx.shape[0], imx.shape[1], 20))
+                im = im.astype('uint8')
+            im[:,:,i * 2] = imx
+            im[:,:,i * 2 + 1] = imy
+
         im_scales.append(im_scale)
         processed_ims.append(im)
 
