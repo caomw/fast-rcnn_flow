@@ -21,7 +21,7 @@ import numpy as np
 """
 
 # Set up voc_<year>_<split> using selective search "fast" mode
-for split in ['train', 'val', 'trainval', 'test']:
+for split in ['train']: #, 'val', 'trainval', 'test']:
     name = 'vid_{}'.format( split)
     __sets[name] = (lambda split=split, year=year:
             datasets.pascal_voc(split, year))

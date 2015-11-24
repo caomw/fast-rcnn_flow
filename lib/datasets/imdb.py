@@ -65,7 +65,7 @@ class imdb(object):
 
     @property
     def cache_path(self):
-        cache_path = osp.abspath('/nfs.yoda/xiaolonw/imagenet/ILSVRC2015/Data/cache')
+        cache_path = osp.abspath('/nfs.yoda/xiaolonw/imagenet/data/cache')
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
         return cache_path

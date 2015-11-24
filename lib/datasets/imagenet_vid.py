@@ -22,17 +22,14 @@ class imagenet_vid(datasets.imdb):
         datasets.imdb.__init__(self, 'vid_' + image_set)
         self._year = year
         self._image_set = image_set
-        self._devkit_path = '/nfs.yoda/xiaolonw/imagenet/ILSVRC2015/'
+        self._devkit_path = '/nfs.yoda/xiaolonw/imagenet/ILSVRC2015_init/'
         self._data_path = '/scratch/xiaolonw/VID/flow/'
         self._classes = ('__background__', # always index 0
-                         '1', '2', '3', '4',
-                         '5', '6', '7', '8', '9',
-                         '10', '11', '12', '13',
-                         '14', '15', '16',
-                         '17', '18', '19', '20',
-                         '21', '22', '23', '24',
-                         '25', '26', '27', '28', 
-                         '29', '30')
+                         'n02691156',    'n02419796',    'n02131653',    'n02834778',    'n01503061',    'n02924116',    'n02958343',
+                         'n02402425',    'n02084071',    'n02121808',    'n02503517',    'n02118333',    'n02510455',    'n02342885',
+                         'n02374451',    'n02129165',    'n01674464',    'n02484322',    'n03790512',    'n02324045',    'n02509815',
+                         'n02411705',    'n01726692',    'n02355227',    'n02129604',    'n04468005',    'n01662784',    'n04530566',
+                         'n02062744',    'n02391049')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
         self._image_ext = ''
         self._image_index = self._load_image_set_index()
@@ -71,7 +68,7 @@ class imagenet_vid(datasets.imdb):
         """
         # Example path to image set file:
         # self._devkit_path + /VOCdevkit2007/VOC2007/ImageSets/Main/val.txt
-        image_set_file = os.path.join('/nfs.yoda/xiaolonw/imagenet/ILSVRC2015/ImageSets/VID/',
+        image_set_file = os.path.join('/nfs.yoda/xiaolonw/imagenet/data/selective_search_data/',
                                       self._image_set + '.txt')
         assert os.path.exists(image_set_file), \
                 'Path does not exist: {}'.format(image_set_file)
@@ -98,8 +95,7 @@ class imagenet_vid(datasets.imdb):
             print '{} gt roidb loaded from {}'.format(self.name, cache_file)
             return roidb
 
-        gt_roidb = [] # [self._load_pascal_annotation(index)
-                   # for index in self.image_index]
+        gt_roidb = [self._load_pascal_annotation(index) for index in self.image_index]
         with open(cache_file, 'wb') as fid:
             cPickle.dump(gt_roidb, fid, cPickle.HIGHEST_PROTOCOL)
         print 'wrote gt roidb to {}'.format(cache_file)
@@ -195,7 +191,7 @@ class imagenet_vid(datasets.imdb):
         Load image and bounding boxes info from XML file in the PASCAL VOC
         format.
         """
-        filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
+        filename = os.path.join(self._devkit_path, 'Annotations/VID', index + '.xml')
         # print 'Loading: {}'.format(filename)
         def get_data_from_tag(node, tag):
             return node.getElementsByTagName(tag)[0].childNodes[0].data
