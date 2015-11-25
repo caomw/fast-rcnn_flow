@@ -122,7 +122,7 @@ def _get_image_blob(roidb, scale_inds):
     im_scales = []
     for i in xrange(num_images):
         imname = roidb[i]['image']
-        print imname
+        # print imname
         imnames = imname.split('/')
         imname2 = imnames[-1]
         imid   = int(imname2)

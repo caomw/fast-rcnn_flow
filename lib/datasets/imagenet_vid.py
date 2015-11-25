@@ -125,8 +125,13 @@ class imagenet_vid(datasets.imdb):
 
         if self._image_set != 'test':
             gt_roidb = self.gt_roidb()
+            gt_roidb2 = []
+            for i in range(np.size(gt_roidb)):
+                if np.size(gt_roidb[i]['boxes']) > 0:
+                    gt_roidb2.append(gt_roidb[i])
+
             ss_roidb = self._load_selective_search_roidb(gt_roidb)
-            roidb = datasets.imdb.merge_roidbs(gt_roidb, ss_roidb)
+            roidb = datasets.imdb.merge_roidbs(gt_roidb2, ss_roidb)
         else:
             roidb = self._load_selective_search_roidb(None)
         with open(cache_file, 'wb') as fid:
