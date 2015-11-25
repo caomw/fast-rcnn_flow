@@ -214,10 +214,10 @@ class imagenet_vid(datasets.imdb):
         # Load object bounding boxes into a data frame.
         for ix, obj in enumerate(objs):
             # Make pixel indexes 0-based
-            x1 = float(get_data_from_tag(obj, 'xmin')) - 1
-            y1 = float(get_data_from_tag(obj, 'ymin')) - 1
-            x2 = float(get_data_from_tag(obj, 'xmax')) - 1
-            y2 = float(get_data_from_tag(obj, 'ymax')) - 1
+            x1 = max(float(get_data_from_tag(obj, 'xmin')) - 1, 0 )
+            y1 = max(float(get_data_from_tag(obj, 'ymin')) - 1, 0 )
+            x2 = max(float(get_data_from_tag(obj, 'xmax')) - 1, 0 )
+            y2 = max(float(get_data_from_tag(obj, 'ymax')) - 1, 0 )
             cls = self._class_to_ind[
                     str(get_data_from_tag(obj, "name")).lower().strip()]
             boxes[ix, :] = [x1, y1, x2, y2]
