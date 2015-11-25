@@ -139,7 +139,7 @@ def _get_image_blob(roidb, scale_inds):
             imx   = cv2.imread(xname, cv2.CV_LOAD_IMAGE_GRAYSCALE)
             imy   = cv2.imread(yname, cv2.CV_LOAD_IMAGE_GRAYSCALE)
             if roidb[i]['flipped']:
-                imx = imx[:, ::-1, :]
+                imx = imx[:, ::-1]
                 imx = 255 - imx
             target_size = cfg.TRAIN.SCALES[scale_inds[i]]
             imx, im_scale = prep_im_for_blob(imx, cfg.PIXEL_MEANS, target_size, cfg.TRAIN.MAX_SIZE)
