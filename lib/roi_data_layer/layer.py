@@ -80,7 +80,8 @@ class RoIDataLayer(caffe.Layer):
 
         # data blob: holds a batch of N images, each with 3 channels
         # The height and width (100 x 100) are dummy values
-        top[0].reshape(1, 3, 100, 100)
+        # flow has 20 channels inputs
+        top[0].reshape(1, 20, 100, 100)
 
         # rois blob: holds R regions of interest, each is a 5-tuple
         # (n, x1, y1, x2, y2) specifying an image batch index n and a
