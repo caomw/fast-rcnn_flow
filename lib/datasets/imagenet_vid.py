@@ -95,7 +95,12 @@ class imagenet_vid(datasets.imdb):
             print '{} gt roidb loaded from {}'.format(self.name, cache_file)
             return roidb
 
-        gt_roidb = [self._load_pascal_annotation(index) for index in self.image_index]
+        gt_roidb = []
+        for index in self.image_index:
+            gt = self._load_pascal_annotation(index)
+            gt_roidb.append(gt)
+
+        # gt_roidb = [self._load_pascal_annotation(index) for index in self.image_index]
         with open(cache_file, 'wb') as fid:
             cPickle.dump(gt_roidb, fid, cPickle.HIGHEST_PROTOCOL)
         print 'wrote gt roidb to {}'.format(cache_file)
