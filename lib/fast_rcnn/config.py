@@ -102,6 +102,8 @@ __C.TEST.SVM = False
 # Test using bounding-box regressors
 __C.TEST.BBOX_REG = False
 
+__C.TEST.SAVE_DIR = ''
+
 #
 # MISC
 #

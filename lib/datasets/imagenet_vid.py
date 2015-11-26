@@ -16,6 +16,7 @@ import scipy.io as sio
 import utils.cython_bbox
 import cPickle
 import subprocess
+from fast_rcnn.config import cfg
 
 class imagenet_vid(datasets.imdb):
     def __init__(self, image_set, year, devkit_path=None):
@@ -243,7 +244,7 @@ class imagenet_vid(datasets.imdb):
             comp_id += '-{}'.format(os.getpid())
 
         # VOCdevkit/results/VOC2007/Main/comp4-44503_det_test_aeroplane.txt
-        path = os.path.join(self._devkit_path, 'results', 'VID', comp_id + '_')
+        path = os.path.join(self._devkit_path, 'results', 'VID', cfg.TEST.SAVE_DIR, comp_id + '_')
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
