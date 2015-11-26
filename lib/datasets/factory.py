@@ -23,8 +23,8 @@ import numpy as np
 year = '2015'
 
 # Set up voc_<year>_<split> using selective search "fast" mode
-for split in ['train']: #, 'val', 'trainval', 'test']:
-    name = 'vid_{}'.format( split)
+for split in ['train', 'test']: #, 'val', 'trainval', 'test']:
+    name = 'vid_{}'.format(split)
     __sets[name] = (lambda split=split, year=year:
             datasets.imagenet_vid(split, year))
 

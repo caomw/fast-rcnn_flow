@@ -278,7 +278,7 @@ class imagenet_vid(datasets.imdb):
 
     def evaluate_detections(self, all_boxes, output_dir):
         comp_id = self._write_voc_results_file(all_boxes)
-        self._do_matlab_eval(comp_id, output_dir)
+        # self._do_matlab_eval(comp_id, output_dir)
 
     def competition_mode(self, on):
         if on:
