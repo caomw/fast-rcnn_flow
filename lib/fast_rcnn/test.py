@@ -274,7 +274,32 @@ def test_net(net, imdb):
 
     roidb = imdb.roidb
     for i in xrange(num_images):
-        im = cv2.imread(imdb.image_path_at(i))
+        #im = cv2.imread(imdb.image_path_at(i))
+
+        imname = imdb.image_path_at(i)
+        imnames = imname.split('/')
+        imname2 = imnames[-1]
+        imid   = int(imname2)
+        srcdir = imname[0 : -len(imname2)]
+
+        im_scale = 1
+        im = 0
+
+        for j in range(10):
+            nowimid = imid + j
+            nowname = '{0:06d}'.format(nowimid)
+            nowname = srcdir + nowname
+            xname = nowname + '_x.jpg'
+            yname = nowname + '_y.jpg'
+            imx   = cv2.imread(xname, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            imy   = cv2.imread(yname, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+            if j == 0:
+                im = np.zeros((imx.shape[0], imx.shape[1], 20))
+                im = im.astype('uint8')
+            im[:,:,j * 2] = imx
+            im[:,:,j * 2 + 1] = imy
+
+
         _t['im_detect'].tic()
         scores, boxes = im_detect(net, im, roidb[i]['boxes'])
         _t['im_detect'].toc()
